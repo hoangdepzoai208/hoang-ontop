@@ -1,252 +1,275 @@
 <!DOCTYPE html>
+
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Câu Lạc Bộ Thể Thao</title>
+<title>Sport News | Ultra Complete</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial, sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
 
-body{
-  background:#f4f4f4;
-  transition:0.4s;
-}
+body{background:#ececec;color:#222;transition:0.3s;}
 
-/* ===== Banner ===== */
+/* LOADER */
+#loader{
+position:fixed;width:100%;height:100%;
+background:#111;display:flex;
+justify-content:center;align-items:center;
+z-index:9999;
+}
+.spinner{
+width:50px;height:50px;
+border:5px solid #444;
+border-top:5px solid red;
+border-radius:50%;
+animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* DARK MODE */
+.dark{background:#111;color:#eee;}
+.dark nav{background:#1a1a1a}
+.dark .card,.dark table{background:rgba(30,30,30,0.6);color:#eee}
+.dark th{background:#000}
+
+/* HEADER */
 header{
-  height:300px;
-  background-size:cover;
-  background-position:center;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:white;
-  font-size:35px;
-  font-weight:bold;
-  text-shadow:2px 2px 8px black;
-  transition:1s;
+background:#1f1f1f;color:#fff;
+padding:20px;text-align:center;
+position:sticky;top:0;z-index:1000;
 }
 
-/* ===== Menu ===== */
+/* NAV */
 nav{
-  background:#111;
-  text-align:center;
-  padding:15px;
-  position:sticky;
-  top:0;
-  z-index:1000;
+display:flex;flex-wrap:wrap;
+justify-content:center;
+background:#fff;padding:10px;
 }
-
 nav button{
-  background:transparent;
-  border:2px solid white;
-  color:white;
-  padding:10px 20px;
-  margin:5px;
-  cursor:pointer;
-  transition:0.3s;
-  border-radius:6px;
+background:none;border:none;
+margin:5px;cursor:pointer;
 }
 
-nav button:hover{
-  background:#ff9800;
-  transform:scale(1.1);
-}
-
-.dark-btn{
-  border-color:#00ffff;
-}
-
-/* ===== Nội dung ===== */
+/* SECTION FIX */
 section{
-  display:none;
-  padding:50px;
-  text-align:center;
-  animation:fadeIn 0.6s ease-in-out;
+display:none;
+padding:50px 10%;
+opacity:0;
+transform:translateY(10px);
+transition:0.3s;
 }
-
 section.active{
-  display:block;
+display:block;
+opacity:1;
+transform:translateY(0);
 }
 
-h2{
-  margin-bottom:20px;
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;margin-top:25px;
 }
 
-/* ===== Gallery ===== */
+.card{
+background:rgba(255,255,255,0.7);
+padding:18px;border-radius:12px;
+box-shadow:0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* TABLE */
+table{
+width:100%;border-collapse:collapse;
+margin-top:20px;background:#fff;
+}
+th,td{
+padding:12px;text-align:center;
+border-bottom:1px solid #eee;
+}
+th{background:#2c2c2c;color:#fff;}
+
+/* GALLERY */
 .gallery{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
-  margin-top:30px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;margin-top:20px;
 }
+.gallery img{width:100%;border-radius:8px}
 
-.gallery img{
-  width:100%;
-  height:200px;
-  object-fit:cover;
-  border-radius:15px;
-  transition:0.4s;
-  box-shadow:0 10px 20px rgba(0,0,0,0.3);
-}
+/* COUNTDOWN */
+.countdown{margin-top:20px;font-size:18px;color:#8b0000}
 
-.gallery img:hover{
-  transform:scale(1.08);
+/* SNOW */
+.snow{
+position:fixed;top:0;left:0;
+width:100%;height:100%;
+pointer-events:none;z-index:0;
 }
-
-/* ===== Animation ===== */
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(20px);}
-  to{opacity:1; transform:translateY(0);}
+.snow span{
+position:absolute;top:-10px;
+color:white;animation:fall linear infinite;
 }
-
-/* ===== Dark Mode ===== */
-.dark{
-  background:#121212;
-  color:white;
-}
-
-.dark nav{
-  background:#000;
-}
-
-/* ===== Responsive ===== */
-@media(max-width:600px){
-  header{
-    height:200px;
-    font-size:22px;
-  }
-  nav button{
-    display:block;
-    width:80%;
-    margin:10px auto;
-  }
-}
+@keyframes fall{to{transform:translateY(110vh)}}
 </style>
+
 </head>
 
 <body>
 
-<header id="banner">
-  Câu Lạc Bộ Thể Thao
+<audio id="clickSound">
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_115b9b63c9.mp3">
+</audio>
+
+<audio id="bgMusic" loop>
+<source src="nhacnen.mp3" type="audio/mpeg">
+</audio>
+
+<div id="loader"><div class="spinner"></div></div>
+
+<header>
+Welcome to our sports club!
+<button onclick="document.body.classList.toggle('dark')">🌙</button>
+<img src="https://files.catbox.moe/7op0pc.png" style="width:100%;">
 </header>
 
 <nav>
-  <button onclick="showPage('home')">Trang chủ</button>
-  <button onclick="showPage('thethao')">Thể thao</button>
-  <button onclick="showPage('hoatdong')">Hoạt động</button>
-  <button onclick="showPage('thanhvien')">Thành viên</button>
-  <button onclick="showPage('thongdiep')">Thông Điệp</button>
-  <button class="dark-btn" onclick="toggleDark()">Chế Độ sáng/tối</button>
+<button onclick="showPage('home')">Trang chủ</button>
+<button onclick="showPage('news')">Tin tức</button>
+<button onclick="showPage('schedule')">Lịch thi đấu</button>
+<button onclick="showPage('ranking')">Bảng xếp hạng</button>
+<button onclick="showPage('players')">Cầu thủ</button>
+<button onclick="showPage('gallery')">Thư viện</button>
+<button onclick="showPage('message')">Thông điệp</button>
+<button onclick="showPage('countdown')">Chung kết</button>
 </nav>
 
 <section id="home" class="active">
-  <h2>Chào mừng đến với Câu Lạc Bộ Thể Thao</h2>
-  <p>Câu Lạc Bộ Thể Thao được thành lập nhằm tạo sân chơi lành mạnh,
-giúp học sinh rèn luyện sức khỏe, tinh thần đồng đội và kỹ năng sống.
-CLB là nơi giao lưu, học hỏi và phát triển toàn diện cho các thành viên.</p>
+<h2>Chào mừng đến với CLB Infinity Goal⚽️</h2>
+<p>Dù bạn là người mới bắt đầu hay đã có kinh nghiệm, Esport luôn chào đón bạn tham gia, học hỏi và chinh phục những đỉnh cao mới.</p>
 </section>
 
-<section id="thethao">
-<h2>Giới thiệu Câu Lạc Bộ</h2>
-<p>
-Câu Lạc Bộ Thể Thao là nơi quy tụ những bạn học sinh có niềm đam mê
-với các hoạt động thể chất như bóng đá, bóng chuyền, cầu lông, chạy bộ
-và nhiều môn thể thao khác.
-</p>
-<p>
-CLB hoạt động với phương châm: 
-<strong>“Khỏe để học tập – Vui để gắn kết – Chơi để trưởng thành”.</strong>
-</p>
+<section id="news">
+<h2>Tin tức nổi bật</h2>
+<div class="grid">
+<div class="card">Chiến thắng 3-1</div>
+<div class="card">Buổi tập chiến thuật</div>
+<div class="card">Tuấn ghi bàn</div>
+</div>
 </section>
 
-<section id="hoatdong">
- <h2>Hoạt động của CLB</h2>
-<p>
-CLB thường xuyên tổ chức các buổi tập luyện định kỳ,
-các trận giao hữu giữa các lớp, các giải đấu nội bộ
-và tham gia thi đấu trong các hội thao do nhà trường tổ chức.
-</p>
-<p>
-Ngoài ra, CLB còn tổ chức các hoạt động ngoại khóa,
-rèn luyện kỹ năng làm việc nhóm và tinh thần kỷ luật.
-</p>
-
-  </div>
+<section id="schedule">
+<h2>Lịch thi đấu</h2>
+<table>
+<tr><th>Ngày</th><th>Trận</th></tr>
+<tr><td>20/03</td><td>Infinity vs Đức</td></tr>
+<tr><td>25/03</td><td>Infinity vs Hàn</td></tr>
+<tr><td>30/03</td><td>Chung kết</td></tr>
+</table>
 </section>
 
-<section id="thanhvien">
-  <h2>Thành viên có chỉ số nổi bật và thành tích</h2>
-<p>
-• Hội thao cấp trường
-(tuấn)<br>
-• Bóng đá nam cấp khối(hoangsadboy)<br>
-• Bóng chuyền nữ (my)<br>
-• Nhiều thành viên đạt chỉ số kém trong đội(ghi tên)
-</p>
-
+<section id="ranking">
+<h2>Bảng xếp hạng</h2>
+<table>
+<tr><th>Hạng</th><th>Đội</th><th>Điểm</th></tr>
+<tr><td>1</td><td>Infinity</td><td>9</td></tr>
+<tr><td>2</td><td>Hàn</td><td>6</td></tr>
+<tr><td>3</td><td>Đức</td><td>3</td></tr>
+</table>
 </section>
 
-<section id="thongdiep">
-  <h2>Thông điệp CLB</h2>
-<p>
-“Thể thao không chỉ rèn luyện sức khỏe,
-mà còn giúp chúng ta học cách kiên trì, kỷ luật và chiến thắng chính mình.”
-</p>
-
+<section id="players">
+<h2>Danh sách cầu thủ</h2>
+<div class="grid">
+<div class="card">Tuấn</div>
+<div class="card">My</div>
+<div class="card">Hoàng</div>
+<div class="card">Uyên Nhi</div>
+<div class="card">Tường Vi</div>
+<div class="card">Thuý Vi</div>
+<div class="card">Duy</div>
+<div class="card">C.Ronaldo</div>
+</div>
 </section>
 
-<!-- ===== Nhạc nền ===== -->
-<audio id="bgmusic" loop preload="auto">
-  <source src="nhacnen.mp3" type="audio/mpeg">
-</audio>
+<section id="gallery">
+<h2>Thư viện ảnh</h2>
+<div class="gallery">
+<img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018">
+<img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20">
+</div>
+</section>
+
+<section id="message">
+<h2>Thông điệp</h2>
+<p>Thể thao không chỉ là chiến thắng mà là hành trình rèn luyện và trưởng thành.</p>
+</section>
+
+<section id="countdown">
+<h2>Đếm ngược</h2>
+<div class="countdown" id="timer"></div>
+</section>
+
+<div class="snow"></div>
 
 <script>
-/* ===== Chuyển trang ===== */
-function showPage(pageId){
-  let sections=document.querySelectorAll("section");
-  sections.forEach(sec=>sec.classList.remove("active"));
-  document.getElementById(pageId).classList.add("active");
+/* LOADER */
+window.onload=()=>document.getElementById("loader").style.display="none"
+
+/* MENU FIX */
+function showPage(id){
+document.querySelectorAll("section").forEach(s=>{
+s.classList.remove("active")
+s.style.display="none"
+})
+let el=document.getElementById(id)
+el.style.display="block"
+setTimeout(()=>el.classList.add("active"),10)
+window.scrollTo({top:0,behavior:"smooth"})
 }
 
-/* ===== Dark Mode ===== */
-function toggleDark(){
-  document.body.classList.toggle("dark");
+/* COUNTDOWN */
+let eventDate=new Date("2026-03-30T15:00:00").getTime()
+let timer=document.getElementById("timer")
+
+let interval=setInterval(()=>{
+let d=eventDate-Date.now()
+if(d<=0){
+timer.innerHTML="🔥 Đang diễn ra!"
+clearInterval(interval)
+return
+}
+let day=Math.floor(d/86400000)
+let h=Math.floor(d%86400000/3600000)
+let m=Math.floor(d%3600000/60000)
+let s=Math.floor(d%60000/1000)
+timer.innerHTML=`${day} ngày ${h} giờ ${m} phút ${s} giây`
+},1000)
+
+/* SNOW */
+const snow=document.querySelector(".snow")
+for(let i=0;i<30;i++){
+let s=document.createElement("span")
+s.innerHTML="❄"
+s.style.left=Math.random()*100+"vw"
+s.style.animationDuration=(Math.random()*5+5)+"s"
+snow.appendChild(s)
 }
 
-/* ===== Banner Slider ===== */
-let images=[
-  "https://picsum.photos/id/1015/1200/400",
-  "https://picsum.photos/id/1016/1200/400",
-  "https://picsum.photos/id/1018/1200/400"
-];
-let index=0;
-let banner=document.getElementById("banner");
+/* CLICK SOUND */
+const click=document.getElementById("clickSound")
+document.querySelectorAll("nav button").forEach(btn=>{
+btn.addEventListener("click",()=>{
+click.currentTime=0
+click.play().catch(()=>{})
+})
+})
 
-function changeBackground(){
-  banner.style.backgroundImage=`url('${images[index]}')`;
-  index=(index+1)%images.length;
-}
-changeBackground();
-setInterval(changeBackground,3000);
-
-/* ===== Nhạc LUÔN BẬT sau chạm đầu ===== */
-const music=document.getElementById("bgmusic");
-music.volume=0.25;
-
-function startMusic(){
-  music.play().catch(()=>{});
-  document.removeEventListener("click", startMusic);
-  document.removeEventListener("touchstart", startMusic);
-}
-document.addEventListener("click", startMusic);
-document.addEventListener("touchstart", startMusic);
+/* MUSIC FIX */
+const bg=document.getElementById("bgMusic")
+document.body.addEventListener("click",()=>{
+bg.play().catch(()=>{})
+},{once:true})
 </script>
 
 </body>
